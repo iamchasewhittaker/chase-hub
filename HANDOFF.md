@@ -1,10 +1,17 @@
 # Chase Hub — Handoff
 
-**Date:** 2026-05-13  
-**Phase:** 1 complete, starting Phase 2  
+**Date:** 2026-05-14  
+**Phase:** 1, 2, 3, 4 all SHIPPED. Site is interview-ready.  
 **Repo:** https://github.com/iamchasewhittaker/chase-hub  
 **Live:** https://chase-hub.vercel.app  
 **Path:** `/Users/chase/Developer/chase/portfolio/chase-hub`
+
+**Outstanding work that's still Chase's call to make:**
+1. Write your first real feed post from your phone (validates magic-link flow).
+2. Review + enhance `src/lib/payment-steps.ts` with your 6 years of merchant-implementation nuance.
+3. Review + fill in `src/lib/troubleshooter-prompt.ts` — the "top 5 reasons integrations fail" TODO.
+4. Optional: register `chasewhittaker.com` → connect in Vercel project settings.
+5. Optional: submit sitemap to Google Search Console.
 
 ---
 
