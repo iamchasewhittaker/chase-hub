@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PaymentFlow } from "@/components/PaymentFlow";
+import { Troubleshooter } from "@/components/Troubleshooter";
 
 export const metadata: Metadata = {
   title: "How a Payment Works — Chase Whittaker",
@@ -11,6 +12,9 @@ export default function PaymentsPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <PaymentFlow />
+      <div className="mt-16">
+        <Troubleshooter />
+      </div>
     </div>
   );
 }
