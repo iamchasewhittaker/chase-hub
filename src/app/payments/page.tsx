@@ -3,7 +3,7 @@ import { PaymentFlow } from "@/components/PaymentFlow";
 import { Troubleshooter } from "@/components/Troubleshooter";
 
 export const metadata: Metadata = {
-  title: "How a Payment Works — Chase Whittaker",
+  title: "How a Payment Works | Chase Whittaker",
   description:
     "An interactive walkthrough of the payment lifecycle, from card tap to settlement. Built by someone who spent 6 years helping merchants go live.",
 };

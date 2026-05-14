@@ -32,7 +32,7 @@ export function AdminClient({ drafts, recentPublished, recentTopics }: Props) {
           onClick={() => setEditing(null)}
           className="mt-2 text-xs text-muted underline hover:text-foreground"
         >
-          Cancel edit — start a new post instead
+          Cancel edit. Start a new post instead.
         </button>
       )}
 

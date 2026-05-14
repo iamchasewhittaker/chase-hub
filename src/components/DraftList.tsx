@@ -34,7 +34,7 @@ export function DraftList({ posts, onEdit }: Props) {
   }
 
   async function softDelete(post: Post) {
-    if (!confirm("Delete this post? It's a soft delete — you can restore it from the database.")) {
+    if (!confirm("Delete this post? It's a soft delete. You can restore it from the database.")) {
       return;
     }
     setBusyId(post.id);

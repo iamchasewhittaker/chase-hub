@@ -28,10 +28,10 @@ export const projects: Project[] = [
   {
     title: "YardOS",
     description:
-      "Lawn decision engine that tells you what to do today based on your yard's actual needs. No guessing, no calendar — just the next right task.",
+      "Lawn decision engine that tells you what to do today based on your yard's actual needs. No guessing, no calendar. Just the next right task.",
     techStack: ["Next.js", "React 19", "Tailwind v4", "localStorage"],
     liveUrl: "https://yardos-six.vercel.app",
     learned:
-      "Designed a decision engine from scratch. The hardest part wasn't the algorithm — it was making the output feel obvious and trustworthy to the user.",
+      "Designed a decision engine from scratch. The hardest part wasn't the algorithm. It was making the output feel obvious and trustworthy to the user.",
   },
 ];
