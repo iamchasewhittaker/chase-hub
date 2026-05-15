@@ -4,6 +4,24 @@ Per-project lessons. New entries go at the top.
 
 ---
 
+## 2026-05-15 — Migrated `/login` from magic-link to email+password
+
+**What happened:** Switched chase-hub to match the portfolio-wide auth standard set by ClarityOS-Money and just-shipped on YardOS (PR #7). Magic links were friction Chase didn't actually want for a personal admin gate — every post required leaving the app, opening an inbox, tapping a link. Password sign-in is one form, two fields, done.
+
+**Pattern that worked:**
+- Same shared Supabase project (`unqtnnxlltiadzbqpyhh`) means the user pre-created for YardOS / ClarityOS-Money is also valid here — no new dashboard work needed. **Auto Confirm User** flag was already set when the row was created.
+- Kept the existing `<Suspense>` boundary because `useSearchParams` is still needed to read the `?next` redirect param (the proxy bounces unauthenticated `/admin` requests through `/login?next=/admin/…`).
+- After successful `signInWithPassword`: `router.replace(next) + router.refresh()`. Beats `window.location.href` because it preserves React state and triggers a server-component revalidation in one shot. (YardOS uses `window.location.href` as a simpler fallback — both work; the `router` flavor is cleaner.)
+- Local verification: `pnpm dev` → fill bad password → confirm Supabase returns "Invalid login credentials" (not "User not found"). That's the cheapest way to prove the form is wired to the right project without sharing real credentials.
+
+**Generalizable lesson:** When the portfolio adopts a new convention (here: password auth across all admin gates), the migration shape is reusable. Read the most recently shipped example first (YardOS), copy its handler shape, then adapt only the parts that differ (here: the `next` query param + Suspense). Three apps, three migrations, ~30 lines diff each.
+
+**What's intentionally left alone:** `src/app/auth/callback/route.ts` still exists. Password flow never hits it, but it's a working `exchangeCodeForSession` handler — if OAuth (GitHub, Google) is added later, the callback is ready. Deleting it would just mean writing it again.
+
+**Email template housekeeping:** The Supabase Auth → Email Templates → "Magic Link" template can be deleted or repurposed; nothing in chase-hub sends OTP emails anymore.
+
+---
+
 ## 2026-05-14 — Vercel `framework: null` silently 404s every route
 
 **What happened:** After the Phase 4 deploy, every route on `chase-hub.vercel.app` returned `x-vercel-error: NOT_FOUND` despite a clean `next build` showing 11 routes generated and the deployment marked `Ready`.

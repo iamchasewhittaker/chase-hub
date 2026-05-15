@@ -4,7 +4,9 @@ All notable changes to chase-hub. Format roughly follows [Keep a Changelog](http
 
 ## [Unreleased]
 
-- (none)
+### Changed
+- **Auth:** switched `/login` from email magic link (`signInWithOtp`) to email + password (`signInWithPassword`). Matches the portfolio standard now set by ClarityOS-Money and YardOS. Single-step form, no inbox round-trip, Safari/Keychain autofill via `autoComplete="email"` + `autoComplete="current-password"`. Post-login redirects to `?next` (defaults to `/admin`) via `router.replace + router.refresh`. The admin gate at `proxy.ts` (ADMIN_EMAIL constraint) is unchanged. The Supabase Auth template "Magic Link" can be deleted or repurposed.
+- `src/app/auth/callback/route.ts` is retained but no longer in the password flow — kept for any future OAuth wiring.
 
 ---
 

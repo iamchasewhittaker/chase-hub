@@ -1,9 +1,9 @@
 # State — chase-hub
 
-> Last updated: 2026-05-14 via /portfolio refresh.
+> Last updated: 2026-05-15 — auth migrated to email+password.
 
 ## Current Phase
-Ship (Step 6 of 6-step framework). **Phases 1–4 all SHIPPED.** Live in production. Awaiting first real-content posts + optional custom domain.
+Ship (Step 6 of 6-step framework). **Phases 1–4 all SHIPPED.** Live in production. Auth now matches portfolio standard (email+password, no OTP). Awaiting first real-content posts + optional custom domain.
 
 ## Status
 Next.js 16 App Router + TypeScript + Tailwind v4 + Framer Motion + Supabase + Vercel AI Gateway + pnpm.
@@ -23,6 +23,7 @@ None. Awaiting Chase's first real posts and his pass on `lib/payment-steps.ts` (
 None.
 
 ## Last Meaningful Activity
+- 2026-05-15 — Migrated `/login` from email magic-link (`signInWithOtp`) to email+password (`signInWithPassword`). Matches portfolio standard set by ClarityOS-Money and YardOS PR #7. Suspense + `?next` redirect logic preserved. Auth callback route left intact for any future OAuth.
 - 2026-05-14 — Phase 4 shipped. Root cause analysis on the prod-404 outage: Vercel auto-detection reported `framework: null` after the portfolio move, edge router silently returned NOT_FOUND for every route despite clean builds. Fixed with explicit `vercel.json` framework pin.
 - 2026-05-13 — Phase 2 shipped (Supabase feed + admin + ratio guardrail) and Phase 3 shipped (AI troubleshooter on `/payments`).
 - 2026-05-13 — Portfolio integration: moved from `~/Developer/chase-hub` to `chase/portfolio/chase-hub`.
