@@ -8,12 +8,26 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+function requireSupabaseEnv() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    throw new Error(
+      `Missing Supabase env vars in ${process.env.VERCEL_ENV ?? "this environment"}. ` +
+        `NEXT_PUBLIC_SUPABASE_URL=${url ? "set" : "MISSING"}, ` +
+        `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${key ? "set" : "MISSING"}.`,
+    );
+  }
+  return { url, key };
+}
+
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
+  const { url, key } = requireSupabaseEnv();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    url,
+    key,
     {
       cookies: {
         getAll() {

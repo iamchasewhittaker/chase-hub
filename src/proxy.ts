@@ -7,12 +7,31 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const ADMIN_EMAIL = "chase.t.whittaker@gmail.com";
 
+// Fail loud, not cryptic. If either Supabase env var is missing, every
+// request would otherwise return Internal Server Error from inside
+// createServerClient(undefined, undefined) — no clue what's wrong from
+// the error message. This throws the actual diagnosis into Vercel logs.
+function requireSupabaseEnv() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    throw new Error(
+      `Missing Supabase env vars in ${process.env.VERCEL_ENV ?? "this environment"}. ` +
+        `NEXT_PUBLIC_SUPABASE_URL=${url ? "set" : "MISSING"}, ` +
+        `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${key ? "set" : "MISSING"}. ` +
+        `Add them via Vercel dashboard or 'vercel env add ... preview --value ... --yes'.`,
+    );
+  }
+  return { url, key };
+}
+
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const { url, key } = requireSupabaseEnv();
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    url,
+    key,
     {
       cookies: {
         getAll() {
