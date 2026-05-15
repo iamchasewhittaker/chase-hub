@@ -4,6 +4,31 @@ Per-project lessons. New entries go at the top.
 
 ---
 
+## 2026-05-15 — Preview deploys silently 500 when env vars are Production-only
+
+**What happened:** First Vercel preview deploy after Phases 1–4 returned "Internal Server Error" on every route, including `/`. Local `pnpm dev` worked fine. Production worked fine. Only previews broke.
+
+**Root cause:** `proxy.ts` runs on every request and calls `createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, …)`. The Supabase env vars were configured in the Vercel dashboard for **Production only**, not Preview. So on preview, both values were `undefined`. The `!` (non-null assertion) is a TypeScript-only lie — at runtime, the middleware crashed before any route handler ran, and Next.js' generic error handler returned 500 with the unhelpful `Internal Server Error` body.
+
+**Why it never showed before:** Chase's prior deploys were all to production. This was the first time a preview build had a request hit the proxy. Same break would happen on any branch — main, refactor, anything that triggers a preview deploy with no env vars set for that environment.
+
+**The fix:** Two layers.
+
+1. **Infrastructure** (the actual fix): add Supabase env vars to the Preview environment via Vercel dashboard or CLI:
+   ```bash
+   vercel env add NEXT_PUBLIC_SUPABASE_URL preview --value "$URL" --yes --scope iamchasewhittakers-projects
+   vercel env add NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY preview --value "$KEY" --yes --scope iamchasewhittakers-projects
+   ```
+   Recommend adding to Development scope too while you're there — covers Vercel CLI users running `vercel dev`.
+
+2. **Code hardening** (so future drift is loud, not silent): replaced `process.env.NEXT_PUBLIC_SUPABASE_URL!` non-null assertions with explicit `requireSupabaseEnv()` checks in `proxy.ts`, `lib/supabase-server.ts`, and `lib/supabase-browser.ts`. They now throw a descriptive error naming which var is missing and in which `VERCEL_ENV` — so next time, the Vercel runtime log says `Missing Supabase env vars in preview. NEXT_PUBLIC_SUPABASE_URL=set, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=MISSING.` instead of nothing.
+
+**Generalizable lesson:** TypeScript's `!` is a static promise, not a runtime check. For env vars that gate the entire app (auth keys, DB URLs, etc.), pay the 4 lines for an explicit check. If the value is undefined at runtime, you want the error message to *name the variable* — not punt to whichever line later trips over `undefined`. This applies to every portfolio app: the same fragile pattern exists in CRA apps (`REACT_APP_SUPABASE_URL`) and was avoided here only by luck.
+
+**Also worth knowing — Vercel UX gotcha:** `vercel env ls` defaults to showing all environments but groups by name. The "environments" column says `Production` and nothing else for these two vars. It's easy to miss that they're not also on Preview unless you specifically look. There's no warning at deploy time that env vars exist for Production but not Preview.
+
+---
+
 ## 2026-05-15 — Migrated `/login` from magic-link to email+password
 
 **What happened:** Switched chase-hub to match the portfolio-wide auth standard set by ClarityOS-Money and just-shipped on YardOS (PR #7). Magic links were friction Chase didn't actually want for a personal admin gate — every post required leaving the app, opening an inbox, tapping a link. Password sign-in is one form, two fields, done.

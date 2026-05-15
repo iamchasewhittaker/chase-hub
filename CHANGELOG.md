@@ -8,6 +8,9 @@ All notable changes to chase-hub. Format roughly follows [Keep a Changelog](http
 - **Auth:** switched `/login` from email magic link (`signInWithOtp`) to email + password (`signInWithPassword`). Matches the portfolio standard now set by ClarityOS-Money and YardOS. Single-step form, no inbox round-trip, Safari/Keychain autofill via `autoComplete="email"` + `autoComplete="current-password"`. Post-login redirects to `?next` (defaults to `/admin`) via `router.replace + router.refresh`. The admin gate at `proxy.ts` (ADMIN_EMAIL constraint) is unchanged. The Supabase Auth template "Magic Link" can be deleted or repurposed.
 - `src/app/auth/callback/route.ts` is retained but no longer in the password flow — kept for any future OAuth wiring.
 
+### Fixed
+- **Preview deploys no longer silently 500.** Replaced `process.env.NEXT_PUBLIC_SUPABASE_*!` non-null assertions in `proxy.ts`, `lib/supabase-server.ts`, and `lib/supabase-browser.ts` with explicit `requireSupabaseEnv()` checks that throw a descriptive error naming which var is missing. The Supabase env vars were configured for Production only, so the first preview deploy crashed inside the middleware with a generic Internal Server Error. Adding env vars to Preview (Vercel dashboard) fixes the deploy; the new error message makes the next gap loud instead of silent.
+
 ---
 
 ## 2026-05-14 — Phase 4: Polish + SEO
