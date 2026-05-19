@@ -1,6 +1,14 @@
+---
+lane: behavioral
+floor:
+  period: weekly
+  metric: chase_hub_posts
+  threshold: 1
+---
+
 # State — chase-hub
 
-> Last updated: 2026-05-15 — auth migrated to email+password.
+> Last updated: 2026-05-19 — Lane v2 frontmatter added (behavioral lane, 1 post/wk floor). Floor-check script `scripts/floor-check-chase-hub.sh` returns `missed never` (no published posts yet — engineering complete, awaiting first real content). Auth migrated to email+password.
 
 ## Current Phase
 Ship (Step 6 of 6-step framework). **Phases 1–4 all SHIPPED.** Live in production. Auth now matches portfolio standard (email+password, no OTP). Awaiting first real-content posts + optional custom domain.
