@@ -7,6 +7,15 @@ export function SiteFooter() {
         <p className="text-sm text-muted">Chase Whittaker</p>
         <div className="flex items-center gap-5">
           <a
+            href="https://workshop-ochre-ten.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
+          >
+            Workshop
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+          <a
             href="https://github.com/iamchasewhittaker"
             target="_blank"
             rel="noopener noreferrer"
