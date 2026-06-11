@@ -162,3 +162,7 @@ useSearchParams() should be wrapped in a suspense boundary at page "/login". Rea
 **The fix:** When visually verifying subtle palette UI, use `preview_inspect` with computed styles, not screenshots. Screenshots are great for layout; bad for color subtleties.
 
 **Other fix that resolved the actual design issue:** Set the social proof *section* background to `#F1F5F9` (light blue-gray) so the white cards have real contrast. This is the only hardcoded color outside the design tokens.
+
+## 2026-05-21
+
+Added `docs/PRD.md` per portfolio-wide PRD audit. Template: LEAN_PRD.md (active/parked) or ARCHIVE_RETRO_PRD.md (archived). All 51 projects now have PRDs at `docs/PRD.md`. Templates live at `~/Developer/chase/prd-templates/`. Plan: `~/.claude/plans/apps-have-a-prd-serialized-acorn.md`.
