@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal / process docs — kept locally, not published
+HANDOFF.md
+STATE.md
+ROADMAP.md
+LEARNINGS.md
+AGENTS.md
+CLAUDE.md
+docs/PRD.md
+.claude/
+docs/
