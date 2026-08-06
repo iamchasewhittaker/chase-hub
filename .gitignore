@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# agent-os private data (draft-check artifacts, etc.)
+.local/
+
 # internal / process docs — kept locally, not published
 HANDOFF.md
 STATE.md
